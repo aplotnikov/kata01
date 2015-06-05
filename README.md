@@ -1,10 +1,10 @@
 # [Kata 01: Supermarket Pricing] (http://codekata.com/kata/kata01-supermarket-pricing/)
 
-This kata arose from some discussions weíve been having at the DFW Practioners meetings. The problem domain is something seemingly simple: pricing goods at supermarkets.
+This kata arose from some discussions we‚Äôve been having at the DFW Practioners meetings. The problem domain is something seemingly simple: pricing goods at supermarkets.
 
 Some things in supermarkets have simple prices: this can of beans costs $0.65. Other things have more complex prices. For example:
 
-* three for a dollar (so whatís the price if I buy 4, or 5?)
+* three for a dollar (so what‚Äôs the price if I buy 4, or 5?)
 * $1.99/pound (so what does 4 ounces cost?)
 * buy two, get one free (so does the third item have a price?)
 
@@ -14,7 +14,7 @@ This kata involves no coding. The exercise is to experiment with various models 
 * when (if ever) does rounding take place?
 * how do you keep an audit trail of pricing decisions (and do you need to)?
 * are costs and prices the same class of thing?
-* if a shelf of 100 cans is priced using ìbuy two, get one freeî, how do you value the stock?
+* if a shelf of 100 cans is priced using ‚Äúbuy two, get one free‚Äù, how do you value the stock?
 
 This is an ideal shower-time kata, but be careful. Some of the problems are more subtle than they first appear. I suggest that it might take a couple of weeks worth of showers to exhaust the main alternatives.
 
