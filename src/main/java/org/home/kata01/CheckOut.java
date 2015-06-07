@@ -1,50 +1,42 @@
 package org.home.kata01;
 
-import org.home.kata01.product.Name;
+import org.home.kata01.product.Price;
 import org.home.kata01.product.Product;
-import org.home.kata01.product.ScannedProduct;
+import org.home.kata01.product.ProductsManager;
+import org.home.kata01.product.scanned.ScannedProductsKeeper;
 
 import javax.annotation.Nonnull;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CheckOut {
-    private final Map<Name, Product>          products;
-    private final Map<String, ScannedProduct> scannedProducts;
+    private final ProductsManager       productsManager;
+    private final ScannedProductsKeeper scannedProductsKeeper;
 
-    private CheckOut(@Nonnull Map<Name, Product> products) {
-        this.products = products;
-        scannedProducts = new HashMap<>();
+    private CheckOut(@Nonnull ProductsManager productsManager) {
+        this.productsManager = productsManager;
+        scannedProductsKeeper = new ScannedProductsKeeper();
     }
 
     public void scan(@Nonnull String name) {
-        scannedProducts.computeIfPresent(name, (existedName, scannedProduct) -> {
-                                             scannedProduct.increaseAmount();
-                                             return scannedProduct;
-                                         }
-                                        );
-        scannedProducts.putIfAbsent(name, new ScannedProduct(name));
+        scannedProductsKeeper.addScannedProduct(name);
     }
 
     @Nonnull
-    public BigDecimal getPrice() {
-        BigDecimal price = BigDecimal.ZERO;
-
-        for (ScannedProduct scannedProduct : scannedProducts.values()) {
-            Product currentProduct = products.get(scannedProduct.name);
-            BigDecimal productPrice = currentProduct.price.multiply(BigDecimal.valueOf(scannedProduct.amount));
-            price = price.add(productPrice);
-        }
-
+    public Price getPrice() {
+        final Price price = new Price();
+        scannedProductsKeeper.iterateProducts(
+                scannedProduct ->
+                        productsManager.findProductByName(scannedProduct.name).ifPresent(currentProduct -> {
+                            Price productPrice = currentProduct.getPriceForAmount(scannedProduct.amount);
+                            price.add(productPrice);
+                        }));
         return price;
     }
 
     public static class Builder {
-        private final Map<Name, Product> products;
+        private final ProductsManager productsManager;
 
         private Builder() {
-            products = new HashMap<>();
+            productsManager = new ProductsManager();
         }
 
         @Nonnull
@@ -53,17 +45,13 @@ public class CheckOut {
         }
 
         @Nonnull
-        public CheckOut build() {
-            return new CheckOut(products);
+        public CheckOut create() {
+            return new CheckOut(productsManager);
         }
 
         @Nonnull
-        public Builder withProduct(@Nonnull Product product) throws IllegalStateException {
-            products.computeIfPresent(product.name, (name, existedProduct) -> {
-                throw new IllegalStateException("The product with \'" + name + "\' name is already existed.");
-            });
-
-            products.put(product.name, product);
+        public Builder withProduct(@Nonnull Product product) {
+            productsManager.addProduct(product);
             return this;
         }
     }

@@ -6,7 +6,12 @@ import java.util.Objects;
 public class Name {
     private final String name;
 
-    public Name(@Nonnull String name) {
+    @Nonnull
+    public static Name of(@Nonnull String name) {
+        return new Name(name);
+    }
+
+    private Name(@Nonnull String name) {
         this.name = name;
     }
 
