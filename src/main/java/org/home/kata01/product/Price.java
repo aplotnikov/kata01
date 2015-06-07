@@ -5,13 +5,23 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Price {
-    public BigDecimal value;
+    private BigDecimal value;
 
-    public Price() {
+    @Nonnull
+    public static Price zero() {
+        return new Price();
+    }
+
+    private Price() {
         value = BigDecimal.ZERO;
     }
 
-    public Price(double value) {
+    @Nonnull
+    public static Price of(double value) {
+        return new Price(value);
+    }
+
+    private Price(double value) {
         this.value = BigDecimal.valueOf(value);
     }
 
@@ -44,13 +54,5 @@ public class Price {
     @Override
     public int hashCode() {
         return Objects.hash(value);
-    }
-
-    @Nonnull
-    public static Price of(double value) {
-        Price price = new Price();
-        price.value = BigDecimal.valueOf(value);
-
-        return price;
     }
 }

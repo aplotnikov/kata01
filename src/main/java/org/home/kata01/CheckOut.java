@@ -22,7 +22,7 @@ public class CheckOut {
 
     @Nonnull
     public Price getPrice() {
-        final Price price = new Price();
+        final Price price = Price.zero();
         scannedProductsKeeper.iterateProducts(
                 scannedProduct ->
                         productsManager.findProductByName(scannedProduct.name).ifPresent(currentProduct -> {

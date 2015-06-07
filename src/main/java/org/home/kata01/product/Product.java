@@ -34,7 +34,7 @@ public class Product {
     }
 
     private Price getPriceWithDiscount(int amount) {
-        final Price price = new Price();
+        final Price price = Price.zero();
         final int[] amountOfProduct = {amount};
 
         discountManager.iterateDiscounts((productAmountForRule, rulePrice) -> {

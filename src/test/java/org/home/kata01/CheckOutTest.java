@@ -10,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.math.BigDecimal;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.home.kata01.CheckOut.Builder.aCheckOut;
 import static org.home.kata01.Products.A;

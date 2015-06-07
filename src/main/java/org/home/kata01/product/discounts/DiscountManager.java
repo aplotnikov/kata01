@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class DiscountManager {
+    // TODO create amount class?
     private final Map<Integer, Discount> rules;
 
     public DiscountManager() {
@@ -25,7 +26,7 @@ public class DiscountManager {
         rules.put(discount.amount, discount);
     }
 
-    public void iterateDiscounts(BiFunction<Integer, Price, IteratorState> ruleAnalyzer) {
+    public void iterateDiscounts(@Nonnull BiFunction<Integer, Price, IteratorState> discountAnalyzer) {
         List<Integer> amounts = getSortedDiscounts();
 
         int ruleIndex = 0;
@@ -34,7 +35,7 @@ public class DiscountManager {
         while (ruleIndex < discountsAmount) {
             int ruleAmount = amounts.get(ruleIndex);
             Price price = rules.get(ruleAmount).price;
-            IteratorState state = ruleAnalyzer.apply(ruleAmount, price);
+            IteratorState state = discountAnalyzer.apply(ruleAmount, price);
 
             if (IteratorState.NEXT_ELEMENT.equals(state)) {
                 ruleIndex++;

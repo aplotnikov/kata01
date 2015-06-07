@@ -11,8 +11,14 @@ public class ScannedProduct {
     public final Name name;
     public       int  amount;
 
-    public ScannedProduct(@Nonnull String name) {
+    @Nonnull
+    public static ScannedProduct of(@Nonnull String name) {
+        return new ScannedProduct(name);
+    }
+
+    private ScannedProduct(@Nonnull String name) {
         this.name = Name.of(name);
+        // TODO if ammount is class what about this places
         increaseAmount();
     }
 

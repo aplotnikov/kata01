@@ -3,8 +3,6 @@ package org.home.kata01.product;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -15,23 +13,23 @@ public class PriceTest {
 
     @Before
     public void setUp() throws Exception {
-        price = new Price(10);
+        price = Price.of(10);
     }
 
     @Test
     public void valueShouldBeAddedToPrice() throws Exception {
-        Price otherPrice = new Price(10);
+        Price otherPrice = Price.of(10);
 
         price.add(otherPrice);
 
-        assertThat(price.value, is(equalTo(BigDecimal.valueOf(20d))));
+        assertThat(price, is(equalTo(Price.of(20d))));
     }
 
     @Test
     public void valueShouldBeMultipliedByValue() throws Exception {
         price.multiply(10);
 
-        assertThat(price.value, is(equalTo(BigDecimal.valueOf(100d))));
+        assertThat(price, is(equalTo(Price.of(100))));
     }
 
     @Test
@@ -39,6 +37,6 @@ public class PriceTest {
         Price price = Price.of(10);
 
         assertThat(price, is(notNullValue()));
-        assertThat(price.value, is(equalTo(BigDecimal.valueOf(10d))));
+        assertThat(price, is(equalTo(Price.of(10))));
     }
 }
