@@ -1,9 +1,14 @@
 package org.home.kata01.product;
 
+import checkers.igj.quals.Mutable;
+
+import org.home.kata01.product.amount.Amount;
+
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Mutable
 public class Price {
     private BigDecimal value;
 
@@ -32,8 +37,9 @@ public class Price {
     }
 
     @Nonnull
-    public Price multiply(int otherValue) {
-        value = value.multiply(BigDecimal.valueOf(otherValue));
+    public Price multiply(@Nonnull Amount otherValue) {
+        BigDecimal multiplier = BigDecimal.valueOf(otherValue.value());
+        value = value.multiply(multiplier);
         return this;
     }
 
@@ -54,5 +60,10 @@ public class Price {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
     }
 }

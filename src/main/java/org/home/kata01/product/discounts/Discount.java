@@ -1,18 +1,22 @@
 package org.home.kata01.product.discounts;
 
+import checkers.igj.quals.Immutable;
+
 import org.home.kata01.product.Price;
+import org.home.kata01.product.amount.Amount;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkState;
-import static java.util.Objects.nonNull;
+import static org.home.kata01.product.amount.Amount.Builder.anAmount;
 
+@Immutable
 public class Discount {
-    public final int   amount;
-    public final Price price;
+    public final Amount amount;
+    public final Price  price;
 
-    private Discount(int amount, @Nonnull Price price) {
+    private Discount(@Nonnull Amount amount, @Nonnull Price price) {
         this.amount = amount;
         this.price = price;
     }
@@ -36,9 +40,14 @@ public class Discount {
         return Objects.hash(amount, price);
     }
 
+    @Override
+    public String toString() {
+        return "Discount for " + amount + " products with price " + price;
+    }
+
     public static class Builder {
-        private int   amount;
-        private Price price;
+        private int    amount;
+        private double price;
 
         private Builder() {
         }
@@ -49,22 +58,24 @@ public class Discount {
         }
 
         @Nonnull
-        public Builder withProductAmount(int amount) {
+        public Builder forProductAmount(int amount) {
             this.amount = amount;
             return this;
         }
 
         @Nonnull
-        public Builder withPrice(@Nonnull Price price) {
+        public Builder withPrice(double price) {
             this.price = price;
             return this;
         }
 
-        public @Nonnull Discount create() {
+        @Nonnull
+        public Discount create() {
             checkState(amount > 0, "'product amount' parameter has to be bigger than zero.");
-            checkState(nonNull(price), "'price' parameter has to be initialized.");
+            checkState(price >= 0, "'price' parameter has to be not less than zero.");
 
-            return new Discount(amount, price);
+            return new Discount(anAmount().withValue(amount).create(),
+                                Price.of(price));
         }
     }
 }

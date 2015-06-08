@@ -1,15 +1,18 @@
 package org.home.kata01.product.scanned;
 
-import checkers.igj.quals.ReadOnly;
+import checkers.igj.quals.Mutable;
 
 import org.home.kata01.product.Name;
+import org.home.kata01.product.amount.Amount;
 
 import javax.annotation.Nonnull;
 
+import static org.home.kata01.product.amount.Amount.Builder.anAmount;
+
+@Mutable
 public class ScannedProduct {
-    @ReadOnly
-    public final Name name;
-    public       int  amount;
+    public final Name   name;
+    public final Amount amount;
 
     @Nonnull
     public static ScannedProduct of(@Nonnull String name) {
@@ -18,11 +21,15 @@ public class ScannedProduct {
 
     private ScannedProduct(@Nonnull String name) {
         this.name = Name.of(name);
-        // TODO if ammount is class what about this places
-        increaseAmount();
+        amount = anAmount().withValue(1).isMutable().create();
     }
 
     public void increaseAmount() {
-        amount++;
+        amount.increase();
+    }
+
+    @Override
+    public String toString() {
+        return "Product \'" + name + "\' is scanned " + amount + " times";
     }
 }

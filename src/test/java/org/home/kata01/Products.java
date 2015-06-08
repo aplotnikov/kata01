@@ -1,6 +1,5 @@
 package org.home.kata01;
 
-import org.home.kata01.product.Price;
 import org.home.kata01.product.Product;
 
 import javax.annotation.Nonnull;
@@ -13,11 +12,11 @@ public enum Products {
     C("C", 30);
 
     private final String name;
-    private final Price  price;
+    private final double price;
 
     Products(@Nonnull String name, double price) {
         this.name = name;
-        this.price = Price.of(price);
+        this.price = price;
     }
 
     @Nonnull
@@ -25,8 +24,7 @@ public enum Products {
         return name;
     }
 
-    @Nonnull
-    public Price getPrice() {
+    public double getPrice() {
         return price;
     }
 

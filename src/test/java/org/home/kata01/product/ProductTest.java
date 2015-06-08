@@ -11,6 +11,8 @@ import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 import static org.junit.Assert.assertThat;
 
 public class ProductTest {
+    private static final String NAME = "name";
+
     @Test(expected = IllegalStateException.class)
     public void exceptionShouldBeThrownWhenNameParameterIsEmpty() throws Exception {
         aProduct().create();
@@ -18,25 +20,22 @@ public class ProductTest {
 
     @Test(expected = IllegalStateException.class)
     public void exceptionShouldBeThrownWhenPriceParameterIsEmpty() throws Exception {
-        aProduct().withName("name").create();
+        aProduct().withName(NAME).create();
     }
 
     @Test(expected = IllegalStateException.class)
     public void exceptionShouldBeThrownWhenRuleWithTheSameAmountOfProductIsAlreadyExisted() throws Exception {
-        Discount discount = aDiscount().withProductAmount(2).withPrice(Price.of(10)).create();
+        Discount discount = aDiscount().forProductAmount(2).withPrice(10).create();
 
-        aProduct().withRule(discount).withRule(discount).create();
+        aProduct().withDiscount(discount).withDiscount(discount).create();
     }
 
     @Test
     public void instanceShouldBeCreated() throws Exception {
-        String name = "name";
-        Price price = Price.of(10);
-
-        Product product = aProduct().withName(name).withPrice(price).create();
+        Product product = aProduct().withName(NAME).withPrice(10).create();
 
         assertThat(product, is(notNullValue()));
-        assertThat(product.name, is(equalTo(Name.of(name))));
-        assertThat(product.price, is(equalTo(price)));
+        assertThat(product.name, is(equalTo(Name.of(NAME))));
+        assertThat(product.price, is(equalTo(Price.of(10))));
     }
 }

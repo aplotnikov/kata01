@@ -1,65 +1,72 @@
 package org.home.kata01.product;
 
+import checkers.igj.quals.Immutable;
+
+import org.home.kata01.product.amount.Amount;
 import org.home.kata01.product.discounts.Discount;
 import org.home.kata01.product.discounts.DiscountManager;
-import org.jmlspecs.annotation.Readonly;
 
 import javax.annotation.Nonnull;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.nonNull;
+import static org.home.kata01.product.amount.Amount.Builder.anAmount;
 import static org.home.kata01.product.discounts.DiscountManager.IteratorState.NEXT_ELEMENT;
 import static org.home.kata01.product.discounts.DiscountManager.IteratorState.REPEAT_FOR_CURRENT_ELEMENT;
 
+@Immutable
 public class Product {
-    @Readonly
     public final  Name            name;
-    @Readonly
     public final  Price           price;
     private final DiscountManager discountManager;
 
-    private Product(@Nonnull String name, @Nonnull Price price, @Nonnull DiscountManager discountManager) {
-        this.name = Name.of(name);
+    private Product(@Nonnull Name name, @Nonnull Price price, @Nonnull DiscountManager discountManager) {
+        this.name = name;
         this.price = price;
         this.discountManager = discountManager;
     }
 
     @Nonnull
-    public Price getPriceForAmount(int amount) {
-        if (amount == 1) {
+    public Price getPriceForAmount(@Nonnull Amount amount) {
+        if (amount.isOne()) {
             return price;
         }
 
-        return getPriceWithDiscount(amount);
+        return getPriceWithDiscount(amount.value());
     }
 
+    @Nonnull
     private Price getPriceWithDiscount(int amount) {
-        final Price price = Price.zero();
-        final int[] amountOfProduct = {amount};
+        final Price resultPrice = Price.zero();
+        final Amount amountOfProduct = anAmount().withValue(amount).isMutable().create();
 
-        discountManager.iterateDiscounts((productAmountForRule, rulePrice) -> {
-            if (productAmountForRule > amountOfProduct[0]) {
+        discountManager.iterateDiscounts((productAmountForDiscount, discountPrice) -> {
+            if (productAmountForDiscount.isBigger(amountOfProduct)) {
                 return NEXT_ELEMENT;
             }
 
-            // TODO ugly
-            amountOfProduct[0] -= productAmountForRule;
-            price.add(rulePrice);
+            amountOfProduct.subtract(productAmountForDiscount);
+            resultPrice.add(discountPrice);
 
             return REPEAT_FOR_CURRENT_ELEMENT;
         });
 
-        if (amountOfProduct[0] != 0) {
-            Price productPrice = this.price.multiply(amountOfProduct[0]);
-            price.add(productPrice);
+        if (!amountOfProduct.isZero()) {
+            Price productPrice = price.multiply(amountOfProduct);
+            resultPrice.add(productPrice);
         }
 
-        return price;
+        return resultPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "\'" + name + "\' product with price " + price;
     }
 
     public static class Builder {
         private       String          name;
-        private       Price           price;
+        private       double          price;
         private final DiscountManager discountManager;
 
         private Builder() {
@@ -78,13 +85,13 @@ public class Product {
         }
 
         @Nonnull
-        public Builder withPrice(@Nonnull Price price) {
+        public Builder withPrice(double price) {
             this.price = price;
             return this;
         }
 
         @Nonnull
-        public Builder withRule(@Nonnull Discount discount) {
+        public Builder withDiscount(@Nonnull Discount discount) {
             discountManager.addDiscount(discount);
             return this;
         }
@@ -92,9 +99,9 @@ public class Product {
         @Nonnull
         public Product create() {
             checkState(nonNull(name), "'name' parameter has to be initialized.");
-            checkState(nonNull(price), "'price' parameter has to be initialized.");
+            checkState(price > 0, "'price' parameter has to be not less than zero.");
 
-            return new Product(name, price, discountManager);
+            return new Product(Name.of(name), Price.of(price), discountManager);
         }
     }
 }

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.home.kata01.CheckOut.Builder.aCheckOut;
 import static org.home.kata01.Products.A;
@@ -27,25 +28,25 @@ public class CheckOutTest {
     public void setUp() throws Exception {
         Product productA = aProduct().withName(A.getName())
                                      .withPrice(A.getPrice())
-                                     .withRule(
-                                             aDiscount().withProductAmount(3)
-                                                        .withPrice(Price.of(20))
+                                     .withDiscount(
+                                             aDiscount().forProductAmount(3)
+                                                        .withPrice(20)
                                                         .create()
-                                              )
-                                     .withRule(
-                                             aDiscount().withProductAmount(4)
-                                                        .withPrice(Price.of(25))
+                                                  )
+                                     .withDiscount(
+                                             aDiscount().forProductAmount(4)
+                                                        .withPrice(25)
                                                         .create()
-                                              )
+                                                  )
                                      .create();
 
         Product productB = aProduct().withName(B.getName())
                                      .withPrice(B.getPrice())
-                                     .withRule(
-                                             aDiscount().withProductAmount(2)
-                                                        .withPrice(Price.of(30))
+                                     .withDiscount(
+                                             aDiscount().forProductAmount(2)
+                                                        .withPrice(30)
                                                         .create()
-                                              ).create();
+                                                  ).create();
 
         checkOut = aCheckOut().withProduct(productA)
                               .withProduct(productB)
@@ -71,9 +72,11 @@ public class CheckOutTest {
     @Test
     @UseDataProvider("simpleProducts")
     public void shouldBeAbleToCalculatePriceForOneProduct(Products product) throws Exception {
+        Price expectedPrice = Price.of(product.getPrice());
+
         checkOut.scan(product.getName());
 
-        assertThat(checkOut.getPrice(), is(product.getPrice()));
+        assertThat(checkOut.getPrice(), is(equalTo(expectedPrice)));
     }
 
     @DataProvider

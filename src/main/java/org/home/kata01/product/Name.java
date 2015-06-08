@@ -1,8 +1,11 @@
 package org.home.kata01.product;
 
+import checkers.igj.quals.Immutable;
+
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
+@Immutable
 public class Name {
     private final String name;
 
@@ -32,5 +35,10 @@ public class Name {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

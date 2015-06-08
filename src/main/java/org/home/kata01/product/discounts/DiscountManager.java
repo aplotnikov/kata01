@@ -1,6 +1,7 @@
 package org.home.kata01.product.discounts;
 
 import org.home.kata01.product.Price;
+import org.home.kata01.product.amount.Amount;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -12,8 +13,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class DiscountManager {
-    // TODO create amount class?
-    private final Map<Integer, Discount> rules;
+    private final Map<Amount, Discount> rules;
 
     public DiscountManager() {
         rules = new HashMap<>();
@@ -26,15 +26,16 @@ public class DiscountManager {
         rules.put(discount.amount, discount);
     }
 
-    public void iterateDiscounts(@Nonnull BiFunction<Integer, Price, IteratorState> discountAnalyzer) {
-        List<Integer> amounts = getSortedDiscounts();
+    public void iterateDiscounts(@Nonnull BiFunction<Amount, Price, IteratorState> discountAnalyzer) {
+        List<Amount> amounts = getSortedDiscounts();
 
         int ruleIndex = 0;
         int discountsAmount = amounts.size();
 
         while (ruleIndex < discountsAmount) {
-            int ruleAmount = amounts.get(ruleIndex);
+            Amount ruleAmount = amounts.get(ruleIndex);
             Price price = rules.get(ruleAmount).price;
+
             IteratorState state = discountAnalyzer.apply(ruleAmount, price);
 
             if (IteratorState.NEXT_ELEMENT.equals(state)) {
@@ -43,9 +44,10 @@ public class DiscountManager {
         }
     }
 
-    private @Nonnull List<Integer> getSortedDiscounts() {
-        List<Integer> amounts = new ArrayList<>(rules.keySet());
-        Collections.sort(amounts, Comparator.<Integer>reverseOrder());
+    @Nonnull
+    private List<Amount> getSortedDiscounts() {
+        List<Amount> amounts = new ArrayList<>(rules.keySet());
+        Collections.sort(amounts, Comparator.<Amount>reverseOrder());
 
         return amounts;
     }
