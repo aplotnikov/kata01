@@ -17,13 +17,6 @@ public class AmountTest {
     private static final int FIVE = 5;
 
     @Test
-    public void givenValueShouldBeContainedIntoInstance() throws Exception {
-        DummyAmount amount = new DummyAmount(FIVE);
-
-        assertThat(amount.value(), is(FIVE));
-    }
-
-    @Test
     public void shouldBeZeroValue() throws Exception {
         DummyAmount amount = new DummyAmount(ZERO);
 
