@@ -1,85 +1,150 @@
 package org.home.kata01.product.amount;
 
+import junitx.extensions.ComparabilityTestCase;
+import junitx.extensions.EqualsHashCodeTestCase;
+
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+
+import javax.annotation.Nonnull;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@RunWith(Enclosed.class)
 public class AmountTest {
-    private class DummyAmount extends AbstractAmount {
+
+    private static class DummyAmount extends AbstractAmount {
         protected DummyAmount(int amount) {
             super(amount);
         }
     }
 
-    private static final int ZERO = 0;
-    private static final int ONE  = 1;
-    private static final int FIVE = 5;
+    private enum TestAmounts {
+        ZERO(0),
+        ONE(1),
+        FIVE(5);
 
-    @Test
-    public void shouldBeZeroValue() throws Exception {
-        DummyAmount amount = new DummyAmount(ZERO);
+        private final int value;
 
-        assertThat(amount.isZero(), is(true));
+        TestAmounts(int value) {
+            this.value = value;
+        }
+
+        @Nonnull
+        public Amount toAmount() {
+            return new DummyAmount(value);
+        }
+
+        public int toInt() {
+            return value;
+        }
     }
 
-    @Test
-    public void shouldBeNotZeroValue() throws Exception {
-        DummyAmount amount = new DummyAmount(ONE);
+    public static class GeneralFunctionalityTest {
+        @Test
+        public void shouldBeZeroValue() throws Exception {
+            Amount amount = TestAmounts.ZERO.toAmount();
 
-        assertThat(amount.isZero(), is(false));
+            assertThat(amount.isZero(), is(true));
+        }
+
+        @Test
+        public void shouldBeNotZeroValue() throws Exception {
+            Amount amount = TestAmounts.ONE.toAmount();
+
+            assertThat(amount.isZero(), is(false));
+        }
+
+        @Test
+        public void shouldBeOneValue() throws Exception {
+            Amount amount = TestAmounts.ONE.toAmount();
+
+            assertThat(amount.isOne(), is(true));
+        }
+
+        @Test
+        public void shouldBeNotOneValue() throws Exception {
+            Amount amount = TestAmounts.ZERO.toAmount();
+
+            assertThat(amount.isOne(), is(false));
+        }
+
+        @Test
+        public void givenAmountShouldBeLessThanCurrentAmount() throws Exception {
+            Amount lessAmount = TestAmounts.ZERO.toAmount();
+            Amount biggerAmount = TestAmounts.ONE.toAmount();
+
+            assertThat(lessAmount.isBigger(biggerAmount), is(false));
+        }
+
+        @Test
+        public void givenAmountShouldBeBiggerThanCurrentAmount() throws Exception {
+            Amount lessAmount = TestAmounts.ZERO.toAmount();
+            Amount biggerAmount = TestAmounts.ONE.toAmount();
+
+            assertThat(biggerAmount.isBigger(lessAmount), is(true));
+        }
+
+        @Test
+        public void valueShouldBeSubtractedFromAmount() throws Exception {
+            Amount amount = TestAmounts.FIVE.toAmount();
+            Amount subtrahend = TestAmounts.ONE.toAmount();
+
+            assertThat(amount.value(), is(TestAmounts.FIVE.toInt()));
+
+            amount.subtract(subtrahend);
+
+            assertThat(amount.value(), is(4));
+        }
+
+        @Test
+        public void valueShouldBeIncreased() throws Exception {
+            Amount amount = TestAmounts.ZERO.toAmount();
+
+            assertThat(amount.value(), is(TestAmounts.ZERO.toInt()));
+
+            amount.increase();
+
+            assertThat(amount.value(), is(TestAmounts.ONE.toInt()));
+        }
     }
 
-    @Test
-    public void shouldBeOneValue() throws Exception {
-        DummyAmount amount = new DummyAmount(ONE);
+    public static class AmountCompatibilityTest extends ComparabilityTestCase {
+        public AmountCompatibilityTest(String name) {
+            super(name);
+        }
 
-        assertThat(amount.isOne(), is(true));
+        @Override
+        protected Comparable createLessInstance() throws Exception {
+            return TestAmounts.ZERO.toAmount();
+        }
+
+        @Override
+        protected Comparable createEqualInstance() throws Exception {
+            return TestAmounts.ONE.toAmount();
+        }
+
+        @Override
+        protected Comparable createGreaterInstance() throws Exception {
+            return TestAmounts.FIVE.toAmount();
+        }
     }
 
-    @Test
-    public void shouldBeNotOneValue() throws Exception {
-        DummyAmount amount = new DummyAmount(ZERO);
+    public static class AmountEqualsAndHashCodeTest extends EqualsHashCodeTestCase {
+        public AmountEqualsAndHashCodeTest(String name) {
+            super(name);
+        }
 
-        assertThat(amount.isOne(), is(false));
-    }
+        @Override
+        protected Object createInstance() throws Exception {
+            return TestAmounts.ZERO.toAmount();
+        }
 
-    @Test
-    public void givenAmountShouldBeLessThanCurrentAmount() throws Exception {
-        DummyAmount lessAmount = new DummyAmount(ZERO);
-        DummyAmount biggerAmount = new DummyAmount(ONE);
-
-        assertThat(lessAmount.isBigger(biggerAmount), is(false));
-    }
-
-    @Test
-    public void givenAmountShouldBeBiggerThanCurrentAmount() throws Exception {
-        DummyAmount lessAmount = new DummyAmount(ZERO);
-        DummyAmount biggerAmount = new DummyAmount(ONE);
-
-        assertThat(biggerAmount.isBigger(lessAmount), is(true));
-    }
-
-    @Test
-    public void valueShouldBeSubtractedFromAmount() throws Exception {
-        DummyAmount amount = new DummyAmount(FIVE);
-        DummyAmount subtrahend = new DummyAmount(ONE);
-
-        assertThat(amount.value(), is(FIVE));
-
-        amount.subtract(subtrahend);
-
-        assertThat(amount.value(), is(4));
-    }
-
-    @Test
-    public void valueShouldBeIncreased() throws Exception {
-        DummyAmount amount = new DummyAmount(ZERO);
-
-        assertThat(amount.value(), is(ZERO));
-
-        amount.increase();
-
-        assertThat(amount.value(), is(ONE));
+        @Override
+        protected Object createNotEqualInstance() throws Exception {
+            return TestAmounts.ONE.toAmount();
+        }
     }
 }
