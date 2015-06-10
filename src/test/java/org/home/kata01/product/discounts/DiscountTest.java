@@ -35,14 +35,14 @@ public class DiscountTest {
 
     public static class GeneralFunctionalityTest {
         @Test
-        public void specialMessageShouldBeReturnFromTOStringMethod() throws Exception {
+        public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
             Discount discount = aDiscount().forProductAmount(Numbers.TEN.toInt())
                                            .withPrice(Numbers.TEN.toInt())
                                            .create();
 
             String expectedValue = String.format("Discount for %d products with price %s",
                                                  Numbers.TEN.toInt(),
-                                                 Price.of(Numbers.TEN.toInt()).toString());
+                                                 Price.of(Numbers.TEN.toInt()));
 
             assertThat(discount.toString(), is(equalTo(expectedValue)));
         }
