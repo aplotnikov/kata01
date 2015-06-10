@@ -31,4 +31,5 @@ dependencies {
         exclude module: "xerces:xmlParserAPI:2.6.2"
     }
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.9.4'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
 }
