@@ -42,7 +42,7 @@ public class Discount {
 
     @Override
     public String toString() {
-        return "Discount for " + amount + " products with price " + price;
+        return String.format("Discount for %d products with price %s", amount.value(), price.toString());
     }
 
     public static class Builder {
