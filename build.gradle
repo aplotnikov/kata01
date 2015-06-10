@@ -29,7 +29,6 @@ dependencies {
         exclude module: "junit:junit:3.8.1"
         exclude module: "xerces:xercesImpl:2.6.2"
         exclude module: "xerces:xmlParserAPI:2.6.2"
-        transitive = false
     }
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.9.4'
 }

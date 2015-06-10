@@ -9,18 +9,12 @@ import org.junit.runner.RunWith;
 
 import javax.annotation.Nonnull;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
-public class AmountTest {
-
-    private static class DummyAmount extends AbstractAmount {
-        protected DummyAmount(int amount) {
-            super(amount);
-        }
-    }
-
+public class MutableAmountTest {
     private enum TestAmounts {
         ZERO(0),
         ONE(1),
@@ -34,7 +28,7 @@ public class AmountTest {
 
         @Nonnull
         public Amount toAmount() {
-            return new DummyAmount(value);
+            return MutableAmount.of(value);
         }
 
         public int toInt() {
@@ -108,6 +102,14 @@ public class AmountTest {
             amount.increase();
 
             assertThat(amount.value(), is(TestAmounts.ONE.toInt()));
+        }
+
+        @Test
+        public void specialMessageShouldBeReturnFromTOStringMethod() throws Exception {
+            Amount amount = TestAmounts.ONE.toAmount();
+            String expectedValue = String.format("Mutable %d amount", TestAmounts.ONE.toInt());
+
+            assertThat(amount.toString(), is(equalTo(expectedValue)));
         }
     }
 

@@ -5,7 +5,7 @@ import checkers.igj.quals.Immutable;
 import javax.annotation.Nonnull;
 
 @Immutable
-public class ImmutableAmount extends AbstractAmount {
+public class ImmutableAmount extends MutableAmount {
     @Nonnull
     public static Amount of(int value) {
         return new ImmutableAmount(value);
@@ -27,6 +27,6 @@ public class ImmutableAmount extends AbstractAmount {
 
     @Override
     public String toString() {
-        return "Immutable " + amount + " amount";
+        return String.format("Immutable %d amount", amount);
     }
 }
