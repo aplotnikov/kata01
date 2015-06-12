@@ -2,7 +2,7 @@ package org.home.kata01.product;
 
 import junitx.extensions.EqualsHashCodeTestCase;
 
-import org.home.kata01.product.utils.TestName;
+import org.home.kata01.utils.TestName;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;

@@ -4,9 +4,9 @@ import junitx.extensions.EqualsHashCodeTestCase;
 
 import org.home.kata01.product.Price;
 import org.home.kata01.product.amount.Amount;
-import org.home.kata01.product.utils.TestAmount;
-import org.home.kata01.product.utils.TestDiscount;
-import org.home.kata01.product.utils.TestPrice;
+import org.home.kata01.utils.TestAmount;
+import org.home.kata01.utils.TestDiscount;
+import org.home.kata01.utils.TestPrice;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;

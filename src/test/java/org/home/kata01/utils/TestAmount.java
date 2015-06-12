@@ -1,4 +1,4 @@
-package org.home.kata01.product.utils;
+package org.home.kata01.utils;
 
 import org.home.kata01.product.amount.Amount;
 import org.home.kata01.product.amount.MutableAmount;
