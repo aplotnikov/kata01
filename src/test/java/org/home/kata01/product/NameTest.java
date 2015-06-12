@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class NameTest {
-    private enum Names {
+    private enum TestName {
         FIRST,
         SECOND;
 
@@ -27,7 +27,7 @@ public class NameTest {
     public static class GeneralFunctionalityTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
-            assertThat(Names.FIRST.toName().toString(), is(equalTo(Names.FIRST.name())));
+            assertThat(TestName.FIRST.toName().toString(), is(equalTo(TestName.FIRST.name())));
         }
     }
 
@@ -38,12 +38,12 @@ public class NameTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return Names.FIRST.toName();
+            return TestName.FIRST.toName();
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            return Names.SECOND.toName();
+            return TestName.SECOND.toName();
         }
     }
 }

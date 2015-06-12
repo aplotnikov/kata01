@@ -15,14 +15,14 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class MutableAmountTest {
-    private enum TestAmounts {
+    public enum TestAmount {
         ZERO(0),
         ONE(1),
         FIVE(5);
 
         private final int value;
 
-        TestAmounts(int value) {
+        TestAmount(int value) {
             this.value = value;
         }
 
@@ -39,54 +39,54 @@ public class MutableAmountTest {
     public static class GeneralFunctionalityTest {
         @Test
         public void shouldBeZeroValue() throws Exception {
-            Amount amount = TestAmounts.ZERO.toAmount();
+            Amount amount = TestAmount.ZERO.toAmount();
 
             assertThat(amount.isZero(), is(true));
         }
 
         @Test
         public void shouldBeNotZeroValue() throws Exception {
-            Amount amount = TestAmounts.ONE.toAmount();
+            Amount amount = TestAmount.ONE.toAmount();
 
             assertThat(amount.isZero(), is(false));
         }
 
         @Test
         public void shouldBeOneValue() throws Exception {
-            Amount amount = TestAmounts.ONE.toAmount();
+            Amount amount = TestAmount.ONE.toAmount();
 
             assertThat(amount.isOne(), is(true));
         }
 
         @Test
         public void shouldBeNotOneValue() throws Exception {
-            Amount amount = TestAmounts.ZERO.toAmount();
+            Amount amount = TestAmount.ZERO.toAmount();
 
             assertThat(amount.isOne(), is(false));
         }
 
         @Test
         public void givenAmountShouldBeLessThanCurrentAmount() throws Exception {
-            Amount lessAmount = TestAmounts.ZERO.toAmount();
-            Amount biggerAmount = TestAmounts.ONE.toAmount();
+            Amount lessAmount = TestAmount.ZERO.toAmount();
+            Amount biggerAmount = TestAmount.ONE.toAmount();
 
             assertThat(lessAmount.isBigger(biggerAmount), is(false));
         }
 
         @Test
         public void givenAmountShouldBeBiggerThanCurrentAmount() throws Exception {
-            Amount lessAmount = TestAmounts.ZERO.toAmount();
-            Amount biggerAmount = TestAmounts.ONE.toAmount();
+            Amount lessAmount = TestAmount.ZERO.toAmount();
+            Amount biggerAmount = TestAmount.ONE.toAmount();
 
             assertThat(biggerAmount.isBigger(lessAmount), is(true));
         }
 
         @Test
         public void valueShouldBeSubtractedFromAmount() throws Exception {
-            Amount amount = TestAmounts.FIVE.toAmount();
-            Amount subtrahend = TestAmounts.ONE.toAmount();
+            Amount amount = TestAmount.FIVE.toAmount();
+            Amount subtrahend = TestAmount.ONE.toAmount();
 
-            assertThat(amount.value(), is(TestAmounts.FIVE.toInt()));
+            assertThat(amount.value(), is(TestAmount.FIVE.toInt()));
 
             amount.subtract(subtrahend);
 
@@ -95,19 +95,19 @@ public class MutableAmountTest {
 
         @Test
         public void valueShouldBeIncreased() throws Exception {
-            Amount amount = TestAmounts.ZERO.toAmount();
+            Amount amount = TestAmount.ZERO.toAmount();
 
-            assertThat(amount.value(), is(TestAmounts.ZERO.toInt()));
+            assertThat(amount.value(), is(TestAmount.ZERO.toInt()));
 
             amount.increase();
 
-            assertThat(amount.value(), is(TestAmounts.ONE.toInt()));
+            assertThat(amount.value(), is(TestAmount.ONE.toInt()));
         }
 
         @Test
         public void specialMessageShouldBeReturnFromTOStringMethod() throws Exception {
-            Amount amount = TestAmounts.ONE.toAmount();
-            String expectedValue = String.format("Mutable %d amount", TestAmounts.ONE.toInt());
+            Amount amount = TestAmount.ONE.toAmount();
+            String expectedValue = String.format("Mutable %d amount", TestAmount.ONE.toInt());
 
             assertThat(amount.toString(), is(equalTo(expectedValue)));
         }
@@ -120,17 +120,17 @@ public class MutableAmountTest {
 
         @Override
         protected Comparable createLessInstance() throws Exception {
-            return TestAmounts.ZERO.toAmount();
+            return TestAmount.ZERO.toAmount();
         }
 
         @Override
         protected Comparable createEqualInstance() throws Exception {
-            return TestAmounts.ONE.toAmount();
+            return TestAmount.ONE.toAmount();
         }
 
         @Override
         protected Comparable createGreaterInstance() throws Exception {
-            return TestAmounts.FIVE.toAmount();
+            return TestAmount.FIVE.toAmount();
         }
     }
 
@@ -141,12 +141,12 @@ public class MutableAmountTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return TestAmounts.ZERO.toAmount();
+            return TestAmount.ZERO.toAmount();
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            return TestAmounts.ONE.toAmount();
+            return TestAmount.ONE.toAmount();
         }
     }
 }

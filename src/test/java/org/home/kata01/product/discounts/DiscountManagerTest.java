@@ -19,14 +19,14 @@ import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 import static org.junit.Assert.assertThat;
 
 public class DiscountManagerTest {
-    private enum Discounts {
+    private enum TestDiscount {
         FIRST(1, 10),
         SECOND(2, 15);
 
         private final int    amount;
         private final double price;
 
-        Discounts(int amount, double price) {
+        TestDiscount(int amount, double price) {
             this.amount = amount;
             this.price = price;
         }
@@ -48,14 +48,14 @@ public class DiscountManagerTest {
 
     @Test(expected = IllegalStateException.class)
     public void exceptionShouldBeThrownWhenTryingToPutInDuplicateDiscount() throws Exception {
-        manager.addDiscount(Discounts.FIRST.toDiscount());
-        manager.addDiscount(Discounts.FIRST.toDiscount());
+        manager.addDiscount(TestDiscount.FIRST.toDiscount());
+        manager.addDiscount(TestDiscount.FIRST.toDiscount());
     }
 
     @Test
     public void iterationProcessShouldBePerformed() throws Exception {
-        Discount firstDiscount = Discounts.FIRST.toDiscount();
-        Discount secondDiscount = Discounts.SECOND.toDiscount();
+        Discount firstDiscount = TestDiscount.FIRST.toDiscount();
+        Discount secondDiscount = TestDiscount.SECOND.toDiscount();
 
         manager.addDiscount(firstDiscount);
         manager.addDiscount(secondDiscount);

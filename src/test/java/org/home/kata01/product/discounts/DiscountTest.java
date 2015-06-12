@@ -17,14 +17,14 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class DiscountTest {
-    private enum Numbers {
+    private enum TestNumber {
         INCORRECT(-1),
         FIVE(5),
         TEN(10);
 
         private final int value;
 
-        Numbers(int value) {
+        TestNumber(int value) {
             this.value = value;
         }
 
@@ -36,13 +36,13 @@ public class DiscountTest {
     public static class GeneralFunctionalityTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
-            Discount discount = aDiscount().forProductAmount(Numbers.TEN.toInt())
-                                           .withPrice(Numbers.TEN.toInt())
+            Discount discount = aDiscount().forProductAmount(TestNumber.TEN.toInt())
+                                           .withPrice(TestNumber.TEN.toInt())
                                            .create();
 
             String expectedValue = String.format("Discount for %d products with price %s",
-                                                 Numbers.TEN.toInt(),
-                                                 Price.of(Numbers.TEN.toInt()));
+                                                 TestNumber.TEN.toInt(),
+                                                 Price.of(TestNumber.TEN.toInt()));
 
             assertThat(discount.toString(), is(equalTo(expectedValue)));
         }
@@ -55,15 +55,15 @@ public class DiscountTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return aDiscount().forProductAmount(Numbers.TEN.toInt())
-                              .withPrice(Numbers.TEN.toInt())
+            return aDiscount().forProductAmount(TestNumber.TEN.toInt())
+                              .withPrice(TestNumber.TEN.toInt())
                               .create();
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            return aDiscount().forProductAmount(Numbers.FIVE.toInt())
-                              .withPrice(Numbers.FIVE.toInt())
+            return aDiscount().forProductAmount(TestNumber.FIVE.toInt())
+                              .withPrice(TestNumber.FIVE.toInt())
                               .create();
         }
     }
@@ -71,22 +71,22 @@ public class DiscountTest {
     public static class BuilderTest {
         @Test(expected = IllegalStateException.class)
         public void exceptionShouldBeThrownWhenAmountParameterIsLessThanZero() throws Exception {
-            aDiscount().forProductAmount(Numbers.INCORRECT.toInt()).create();
+            aDiscount().forProductAmount(TestNumber.INCORRECT.toInt()).create();
         }
 
         @Test(expected = IllegalStateException.class)
         public void exceptionShouldBeThrownWhenPriceParameterIsEmpty() throws Exception {
-            aDiscount().withPrice(Numbers.TEN.toInt()).create();
+            aDiscount().withPrice(TestNumber.TEN.toInt()).create();
         }
 
         @Test
         public void instanceShouldBeCreated() throws Exception {
-            Amount expectedAmount = anAmount().withValue(Numbers.FIVE.toInt())
+            Amount expectedAmount = anAmount().withValue(TestNumber.FIVE.toInt())
                                               .create();
-            Price expectedPrice = Price.of(Numbers.TEN.toInt());
+            Price expectedPrice = Price.of(TestNumber.TEN.toInt());
 
-            Discount product = aDiscount().forProductAmount(Numbers.FIVE.toInt())
-                                          .withPrice(Numbers.TEN.toInt())
+            Discount product = aDiscount().forProductAmount(TestNumber.FIVE.toInt())
+                                          .withPrice(TestNumber.TEN.toInt())
                                           .create();
 
             assertThat(product, is(notNullValue()));

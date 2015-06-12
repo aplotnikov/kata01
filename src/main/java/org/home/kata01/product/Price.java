@@ -14,11 +14,7 @@ public class Price {
 
     @Nonnull
     public static Price zero() {
-        return new Price();
-    }
-
-    private Price() {
-        value = BigDecimal.ZERO;
+        return Price.of(0);
     }
 
     @Nonnull
