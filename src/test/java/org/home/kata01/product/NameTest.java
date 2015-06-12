@@ -16,7 +16,7 @@ public class NameTest {
     public static class GeneralFunctionalityTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
-            assertThat(TestName.FIRST.toName().toString(), is(equalTo(TestName.FIRST.name())));
+            assertThat(TestName.A.toName().toString(), is(equalTo(TestName.A.name())));
         }
     }
 
@@ -27,12 +27,12 @@ public class NameTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return TestName.FIRST.toName();
+            return TestName.A.toName();
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            return TestName.SECOND.toName();
+            return TestName.B.toName();
         }
     }
 }

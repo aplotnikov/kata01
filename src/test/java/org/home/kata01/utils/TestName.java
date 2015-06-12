@@ -5,8 +5,9 @@ import org.home.kata01.product.Name;
 import javax.annotation.Nonnull;
 
 public enum TestName {
-    FIRST,
-    SECOND;
+    A,
+    B,
+    C;
 
     public @Nonnull Name toName() {
         return Name.of(name());

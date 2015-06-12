@@ -7,8 +7,9 @@ import javax.annotation.Nonnull;
 import static org.home.kata01.product.Product.Builder.aProduct;
 
 public enum TestProduct {
-    FIRST(TestName.FIRST, TestPrice.TEN),
-    SECOND(TestName.SECOND, TestPrice.FIVE);
+    A(TestName.A, TestPrice.TEN),
+    B(TestName.B, TestPrice.FIVE),
+    C(TestName.C, TestPrice.TWENTY),;
 
     private final TestName  name;
     private final TestPrice price;

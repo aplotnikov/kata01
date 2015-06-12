@@ -16,9 +16,9 @@ public class ScannedProductTest {
     public static class GeneralFunctionalityTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
-            ScannedProduct scannedProduct = ScannedProduct.of(TestName.FIRST.name());
+            ScannedProduct scannedProduct = ScannedProduct.of(TestName.A.name());
 
-            String expectedValue = String.format("Product \'%s\' is scanned %d times", TestName.FIRST.name(), 1);
+            String expectedValue = String.format("Product \'%s\' is scanned %d times", TestName.A.name(), 1);
 
             assertThat(scannedProduct.toString(), is(equalTo(expectedValue)));
         }
@@ -31,12 +31,12 @@ public class ScannedProductTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return ScannedProduct.of(TestName.FIRST.name());
+            return ScannedProduct.of(TestName.A.name());
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            ScannedProduct scannedProduct = ScannedProduct.of(TestName.FIRST.name());
+            ScannedProduct scannedProduct = ScannedProduct.of(TestName.A.name());
             scannedProduct.increaseAmount();
 
             return scannedProduct;

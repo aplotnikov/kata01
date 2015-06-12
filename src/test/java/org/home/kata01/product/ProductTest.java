@@ -27,7 +27,7 @@ public class ProductTest {
 
         @Before
         public void setUp() throws Exception {
-            product = aProduct().withName(TestName.FIRST.name())
+            product = aProduct().withName(TestName.A.name())
                                 .withPrice(TestPrice.TEN.getValue())
                                 .withDiscount(TestDiscount.FIRST.toDiscount())
                                 .create();
@@ -57,10 +57,10 @@ public class ProductTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
             String expectedValue = String.format("\'%s\' product with price %s",
-                                                 TestName.FIRST.toName().toString(),
+                                                 TestName.A.toName().toString(),
                                                  TestPrice.TEN.toPrice().toString());
 
-            assertThat(TestProduct.FIRST.toProduct().toString(), is(equalTo(expectedValue)));
+            assertThat(TestProduct.A.toProduct().toString(), is(equalTo(expectedValue)));
         }
     }
 
@@ -71,12 +71,12 @@ public class ProductTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return TestProduct.FIRST.toProduct();
+            return TestProduct.A.toProduct();
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            return TestProduct.SECOND.toProduct();
+            return TestProduct.B.toProduct();
         }
     }
 
@@ -88,7 +88,7 @@ public class ProductTest {
 
         @Test(expected = IllegalStateException.class)
         public void exceptionShouldBeThrownWhenPriceParameterIsEmpty() throws Exception {
-            aProduct().withName(TestName.FIRST.name()).create();
+            aProduct().withName(TestName.A.name()).create();
         }
 
         @Test(expected = IllegalStateException.class)
@@ -102,10 +102,10 @@ public class ProductTest {
 
         @Test
         public void instanceShouldBeCreated() throws Exception {
-            Product product = TestProduct.FIRST.toProduct();
+            Product product = TestProduct.A.toProduct();
 
             assertThat(product, is(notNullValue()));
-            assertThat(product.name, is(equalTo(TestName.FIRST.toName())));
+            assertThat(product.name, is(equalTo(TestName.A.toName())));
             assertThat(product.price, is(equalTo(TestPrice.TEN.toPrice())));
         }
     }

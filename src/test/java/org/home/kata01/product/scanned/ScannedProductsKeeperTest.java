@@ -16,8 +16,8 @@ public class ScannedProductsKeeperTest {
     public void shouldBeAbleToIterateDifferentItems() throws Exception {
         ScannedProductsKeeper keeper = new ScannedProductsKeeper();
 
-        String firstProductName = TestProduct.FIRST.toProduct().name.toString();
-        String secondProductName = TestProduct.SECOND.toProduct().name.toString();
+        String firstProductName = TestProduct.A.toProduct().name.toString();
+        String secondProductName = TestProduct.B.toProduct().name.toString();
 
         keeper.addScannedProduct(firstProductName);
         keeper.addScannedProduct(secondProductName);

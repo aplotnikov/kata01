@@ -6,6 +6,10 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.home.kata01.product.Price;
 import org.home.kata01.product.Product;
+import org.home.kata01.utils.TestDiscount;
+import org.home.kata01.utils.TestName;
+import org.home.kata01.utils.TestPrice;
+import org.home.kata01.utils.TestProduct;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +17,7 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.home.kata01.CheckOut.Builder.aCheckOut;
-import static org.home.kata01.Products.A;
-import static org.home.kata01.Products.B;
-import static org.home.kata01.Products.C;
 import static org.home.kata01.product.Product.Builder.aProduct;
-import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 import static org.junit.Assert.assertThat;
 
 @RunWith(DataProviderRunner.class)
@@ -26,65 +26,52 @@ public class CheckOutTest {
 
     @Before
     public void setUp() throws Exception {
-        Product productA = aProduct().withName(A.getName())
-                                     .withPrice(A.getPrice())
-                                     .withDiscount(
-                                             aDiscount().forProductAmount(3)
-                                                        .withPrice(20)
-                                                        .create()
-                                                  )
-                                     .withDiscount(
-                                             aDiscount().forProductAmount(4)
-                                                        .withPrice(25)
-                                                        .create()
-                                                  )
+        Product productA = aProduct().withName(TestName.A.name())
+                                     .withPrice(TestPrice.TEN.getValue())
+                                     .withDiscount(TestDiscount.SECOND.toDiscount())
+                                     .withDiscount(TestDiscount.THIRD.toDiscount())
                                      .create();
 
-        Product productB = aProduct().withName(B.getName())
-                                     .withPrice(B.getPrice())
-                                     .withDiscount(
-                                             aDiscount().forProductAmount(2)
-                                                        .withPrice(30)
-                                                        .create()
-                                                  ).create();
+        Product productB = aProduct().withName(TestName.B.name())
+                                     .withPrice(TestPrice.FIVE.getValue())
+                                     .withDiscount(TestDiscount.SECOND.toDiscount())
+                                     .create();
 
         checkOut = aCheckOut().withProduct(productA)
                               .withProduct(productB)
-                              .withProduct(C.toProduct())
+                              .withProduct(TestProduct.C.toProduct())
                               .create();
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldBeImpossibleToAddTwoProductsWithTheSameName() throws Exception {
-        aCheckOut().withProduct(A.toProduct())
-                   .withProduct(A.toProduct());
+        aCheckOut().withProduct(TestProduct.A.toProduct())
+                   .withProduct(TestProduct.A.toProduct());
     }
 
     @DataProvider
     public static Object[][] simpleProducts() {
         return new Object[][]{
-                {A},
-                {B},
-                {C}
+                {TestProduct.A.toProduct()},
+                {TestProduct.B.toProduct()},
+                {TestProduct.C.toProduct()}
         };
     }
 
     @Test
     @UseDataProvider("simpleProducts")
-    public void shouldBeAbleToCalculatePriceForOneProduct(Products product) throws Exception {
-        Price expectedPrice = Price.of(product.getPrice());
+    public void shouldBeAbleToCalculatePriceForOneProduct(Product product) throws Exception {
+        checkOut.scan(product.name.toString());
 
-        checkOut.scan(product.getName());
-
-        assertThat(checkOut.getPrice(), is(equalTo(expectedPrice)));
+        assertThat(checkOut.getPrice(), is(equalTo(product.price)));
     }
 
     @DataProvider
     public static Object[][] coupleProducts() {
         return new Object[][]{
-                {"AB", Price.of(30)},
-                {"BA", Price.of(30)},
-                {"ABC", Price.of(60)}
+                {"AB", Price.of(15)},
+                {"BA", Price.of(15)},
+                {"ABC", Price.of(35)}
         };
     }
 
@@ -98,15 +85,15 @@ public class CheckOutTest {
     @DataProvider
     public static Object[][] coupleProductsWithRepeatingName() {
         return new Object[][]{
-                {"AAA", Price.of(20)},
-                {"AAAA", Price.of(25)},
-                {"AAAAA", Price.of(35)},
-                {"AAAAAA", Price.of(45)},
-                {"AAAAAAA", Price.of(45)},
-                {"BB", Price.of(30)},
-                {"BBB", Price.of(50)},
-                {"AABA", Price.of(40)},
-                {"AABAC", Price.of(70)}
+                {"AAA", Price.of(7)},
+                {"AAAA", Price.of(17)},
+                {"AAAAA", Price.of(12)},
+                {"AAAAAA", Price.of(14)},
+                {"AAAAAAA", Price.of(24)},
+                {"BB", Price.of(5)},
+                {"BBB", Price.of(10)},
+                {"AABA", Price.of(12)},
+                {"AABAC", Price.of(32)}
         };
     }
 

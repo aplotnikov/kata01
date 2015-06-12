@@ -8,7 +8,8 @@ import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 
 public enum TestDiscount {
     FIRST(TestAmount.FIVE, TestPrice.TEN),
-    SECOND(TestAmount.ONE, TestPrice.FIVE);
+    SECOND(TestAmount.TWO, TestPrice.FIVE),
+    THIRD(TestAmount.THREE, TestPrice.SEVEN);
 
     private final TestAmount amount;
     private final TestPrice  price;
