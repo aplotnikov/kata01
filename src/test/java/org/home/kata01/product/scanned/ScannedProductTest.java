@@ -2,6 +2,7 @@ package org.home.kata01.product.scanned;
 
 import junitx.extensions.EqualsHashCodeTestCase;
 
+import org.home.kata01.product.utils.TestName;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -12,14 +13,12 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class ScannedProductTest {
-    private static final String NAME = "name";
-
     public static class GeneralFunctionalityTest {
         @Test
         public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
-            ScannedProduct scannedProduct = ScannedProduct.of(NAME);
+            ScannedProduct scannedProduct = ScannedProduct.of(TestName.FIRST.name());
 
-            String expectedValue = String.format("Product \'%s\' is scanned %d times", NAME, 1);
+            String expectedValue = String.format("Product \'%s\' is scanned %d times", TestName.FIRST.name(), 1);
 
             assertThat(scannedProduct.toString(), is(equalTo(expectedValue)));
         }
@@ -32,12 +31,12 @@ public class ScannedProductTest {
 
         @Override
         protected Object createInstance() throws Exception {
-            return ScannedProduct.of(NAME);
+            return ScannedProduct.of(TestName.FIRST.name());
         }
 
         @Override
         protected Object createNotEqualInstance() throws Exception {
-            ScannedProduct scannedProduct = ScannedProduct.of(NAME);
+            ScannedProduct scannedProduct = ScannedProduct.of(TestName.FIRST.name());
             scannedProduct.increaseAmount();
 
             return scannedProduct;

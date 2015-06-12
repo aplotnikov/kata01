@@ -3,44 +3,21 @@ package org.home.kata01.product;
 import junitx.extensions.EqualsHashCodeTestCase;
 
 import org.home.kata01.product.amount.Amount;
+import org.home.kata01.product.utils.TestAmount;
+import org.home.kata01.product.utils.TestPrice;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.home.kata01.product.amount.MutableAmountTest.TestAmount;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class PriceTest {
-    private enum TestPrice {
-        ZERO(0),
-        FIVE(5),
-        TEN(10),
-        TWENTY(20),
-        FIFTY(50);
-
-        private final double value;
-
-        TestPrice(double value) {
-            this.value = value;
-        }
-
-        public double getValue() {
-            return value;
-        }
-
-        @Nonnull
-        public Price toPrice() {
-            return Price.of(value);
-        }
-    }
-
     public static class GeneralFunctionalityTest {
         @Test
         public void valueShouldBeAddedToPrice() throws Exception {

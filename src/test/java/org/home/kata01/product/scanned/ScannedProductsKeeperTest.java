@@ -1,6 +1,6 @@
 package org.home.kata01.product.scanned;
 
-import org.home.kata01.Products;
+import org.home.kata01.product.utils.TestProduct;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -16,16 +16,19 @@ public class ScannedProductsKeeperTest {
     public void shouldBeAbleToIterateDifferentItems() throws Exception {
         ScannedProductsKeeper keeper = new ScannedProductsKeeper();
 
-        keeper.addScannedProduct(Products.A.getName());
-        keeper.addScannedProduct(Products.A.getName());
-        keeper.addScannedProduct(Products.B.getName());
+        String firstProductName = TestProduct.FIRST.toProduct().name.toString();
+        String secondProductName = TestProduct.SECOND.toProduct().name.toString();
+
+        keeper.addScannedProduct(firstProductName);
+        keeper.addScannedProduct(secondProductName);
+        keeper.addScannedProduct(firstProductName);
 
         List<ScannedProduct> scannedProducts = new ArrayList<>();
         keeper.iterateProducts(scannedProducts::add);
 
-        ScannedProduct scannedProductA = ScannedProduct.of(Products.A.getName());
+        ScannedProduct scannedProductA = ScannedProduct.of(firstProductName);
         scannedProductA.increaseAmount();
-        ScannedProduct scannedProductB = ScannedProduct.of(Products.B.getName());
+        ScannedProduct scannedProductB = ScannedProduct.of(secondProductName);
 
         assertThat(scannedProducts, both(hasItem(equalTo(scannedProductA))).and(hasItem(equalTo(scannedProductB))));
     }

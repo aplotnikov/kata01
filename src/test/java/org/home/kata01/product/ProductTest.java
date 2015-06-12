@@ -1,7 +1,17 @@
 package org.home.kata01.product;
 
+import junitx.extensions.EqualsHashCodeTestCase;
+
 import org.home.kata01.product.discounts.Discount;
+import org.home.kata01.product.utils.TestAmount;
+import org.home.kata01.product.utils.TestDiscount;
+import org.home.kata01.product.utils.TestName;
+import org.home.kata01.product.utils.TestPrice;
+import org.home.kata01.product.utils.TestProduct;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -10,32 +20,93 @@ import static org.home.kata01.product.Product.Builder.aProduct;
 import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 import static org.junit.Assert.assertThat;
 
+@RunWith(Enclosed.class)
 public class ProductTest {
-    private static final String NAME = "name";
+    public static class GeneralFunctionalityTest {
+        private Product product;
 
-    @Test(expected = IllegalStateException.class)
-    public void exceptionShouldBeThrownWhenNameParameterIsEmpty() throws Exception {
-        aProduct().create();
+        @Before
+        public void setUp() throws Exception {
+            product = aProduct().withName(TestName.FIRST.name())
+                                .withPrice(TestPrice.TEN.getValue())
+                                .withDiscount(TestDiscount.FIRST.toDiscount())
+                                .create();
+        }
+
+        @Test
+        public void priceShouldBeCalculatedWhenAmountOfProductIsOne() throws Exception {
+            Price price = product.getPriceForAmount(TestAmount.ONE.toAmount());
+
+            assertThat(price, is(equalTo(TestPrice.TEN.toPrice())));
+        }
+
+        @Test
+        public void priceShouldBeCalculatedWhenDiscountIsFound() throws Exception {
+            Price price = product.getPriceForAmount(TestAmount.FIVE.toAmount());
+
+            assertThat(price, is(equalTo(TestDiscount.FIRST.toDiscount().price)));
+        }
+
+        @Test
+        public void priceShouldBeCalculatedWhenDiscountIsNotFound() throws Exception {
+            Price price = product.getPriceForAmount(TestAmount.TWO.toAmount());
+
+            assertThat(price, is(equalTo(TestPrice.TWENTY.toPrice())));
+        }
+
+        @Test
+        public void specialMessageShouldBeReturnFromToStringMethod() throws Exception {
+            String expectedValue = String.format("\'%s\' product with price %s",
+                                                 TestName.FIRST.toName().toString(),
+                                                 TestPrice.TEN.toPrice().toString());
+
+            assertThat(TestProduct.FIRST.toProduct().toString(), is(equalTo(expectedValue)));
+        }
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void exceptionShouldBeThrownWhenPriceParameterIsEmpty() throws Exception {
-        aProduct().withName(NAME).create();
+    public static class ProductEqualsAndHashCodeTest extends EqualsHashCodeTestCase {
+        public ProductEqualsAndHashCodeTest(String name) {
+            super(name);
+        }
+
+        @Override
+        protected Object createInstance() throws Exception {
+            return TestProduct.FIRST.toProduct();
+        }
+
+        @Override
+        protected Object createNotEqualInstance() throws Exception {
+            return TestProduct.SECOND.toProduct();
+        }
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void exceptionShouldBeThrownWhenRuleWithTheSameAmountOfProductIsAlreadyExisted() throws Exception {
-        Discount discount = aDiscount().forProductAmount(2).withPrice(10).create();
+    public static class BuilderTest {
+        @Test(expected = IllegalStateException.class)
+        public void exceptionShouldBeThrownWhenNameParameterIsEmpty() throws Exception {
+            aProduct().create();
+        }
 
-        aProduct().withDiscount(discount).withDiscount(discount).create();
-    }
+        @Test(expected = IllegalStateException.class)
+        public void exceptionShouldBeThrownWhenPriceParameterIsEmpty() throws Exception {
+            aProduct().withName(TestName.FIRST.name()).create();
+        }
 
-    @Test
-    public void instanceShouldBeCreated() throws Exception {
-        Product product = aProduct().withName(NAME).withPrice(10).create();
+        @Test(expected = IllegalStateException.class)
+        public void exceptionShouldBeThrownWhenRuleWithTheSameAmountOfProductIsAlreadyExisted() throws Exception {
+            Discount discount = aDiscount().forProductAmount(TestAmount.ONE.toInt())
+                                           .withPrice(TestPrice.TEN.getValue())
+                                           .create();
 
-        assertThat(product, is(notNullValue()));
-        assertThat(product.name, is(equalTo(Name.of(NAME))));
-        assertThat(product.price, is(equalTo(Price.of(10))));
+            aProduct().withDiscount(discount).withDiscount(discount).create();
+        }
+
+        @Test
+        public void instanceShouldBeCreated() throws Exception {
+            Product product = TestProduct.FIRST.toProduct();
+
+            assertThat(product, is(notNullValue()));
+            assertThat(product.name, is(equalTo(TestName.FIRST.toName())));
+            assertThat(product.price, is(equalTo(TestPrice.TEN.toPrice())));
+        }
     }
 }

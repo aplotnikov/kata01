@@ -4,10 +4,10 @@ import org.home.kata01.product.Price;
 import org.home.kata01.product.amount.Amount;
 import org.home.kata01.product.amount.MutableAmount;
 import org.home.kata01.product.discounts.DiscountManager.IteratorState;
+import org.home.kata01.product.utils.TestDiscount;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,30 +15,9 @@ import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
-import static org.home.kata01.product.discounts.Discount.Builder.aDiscount;
 import static org.junit.Assert.assertThat;
 
 public class DiscountManagerTest {
-    private enum TestDiscount {
-        FIRST(1, 10),
-        SECOND(2, 15);
-
-        private final int    amount;
-        private final double price;
-
-        TestDiscount(int amount, double price) {
-            this.amount = amount;
-            this.price = price;
-        }
-
-        @Nonnull
-        public Discount toDiscount() {
-            return aDiscount().forProductAmount(amount)
-                              .withPrice(price)
-                              .create();
-        }
-    }
-
     private DiscountManager manager;
 
     @Before

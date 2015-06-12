@@ -7,6 +7,7 @@ import org.home.kata01.product.discounts.Discount;
 import org.home.kata01.product.discounts.DiscountManager;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.nonNull;
@@ -60,8 +61,28 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Product)) {
+            return false;
+        }
+
+        Product product = (Product)o;
+        return Objects.equals(name, product.name) &&
+               Objects.equals(price, product.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price);
+    }
+
+    @Override
     public String toString() {
-        return "\'" + name + "\' product with price " + price;
+        return String.format("\'%s\' product with price %s", name.toString(), price.toString());
     }
 
     public static class Builder {

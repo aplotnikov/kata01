@@ -3,11 +3,10 @@ package org.home.kata01.product.amount;
 import junitx.extensions.ComparabilityTestCase;
 import junitx.extensions.EqualsHashCodeTestCase;
 
+import org.home.kata01.product.utils.TestAmount;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-
-import javax.annotation.Nonnull;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -15,53 +14,28 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Enclosed.class)
 public class MutableAmountTest {
-    public enum TestAmount {
-        ZERO(0),
-        ONE(1),
-        FIVE(5);
-
-        private final int value;
-
-        TestAmount(int value) {
-            this.value = value;
-        }
-
-        @Nonnull
-        public Amount toAmount() {
-            return MutableAmount.of(value);
-        }
-
-        public int toInt() {
-            return value;
-        }
-    }
-
     public static class GeneralFunctionalityTest {
         @Test
         public void shouldBeZeroValue() throws Exception {
             Amount amount = TestAmount.ZERO.toAmount();
-
             assertThat(amount.isZero(), is(true));
         }
 
         @Test
         public void shouldBeNotZeroValue() throws Exception {
             Amount amount = TestAmount.ONE.toAmount();
-
             assertThat(amount.isZero(), is(false));
         }
 
         @Test
         public void shouldBeOneValue() throws Exception {
             Amount amount = TestAmount.ONE.toAmount();
-
             assertThat(amount.isOne(), is(true));
         }
 
         @Test
         public void shouldBeNotOneValue() throws Exception {
             Amount amount = TestAmount.ZERO.toAmount();
-
             assertThat(amount.isOne(), is(false));
         }
 

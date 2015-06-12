@@ -30,7 +30,6 @@ public class ImmutableAmountTest {
     @Test
     public void specialMessageShouldBeReturnFromTOStringMethod() throws Exception {
         String expectedValue = String.format("Immutable %d amount", ONE);
-
         assertThat(amount.toString(), is(equalTo(expectedValue)));
     }
 }
