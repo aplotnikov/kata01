@@ -5,12 +5,15 @@ import org.home.kata01.product.Price;
 import org.home.kata01.product.Product.Builder;
 import org.home.kata01.product.discounts.Discount;
 import org.jbehave.core.annotations.Alias;
+import org.jbehave.core.annotations.BeforeStory;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.jbehave.core.model.ExamplesTable;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -24,8 +27,21 @@ public class CheckOutSteps {
     private Optional<Builder>  productBuilder;
     private Optional<CheckOut> checkOut;
 
-    public CheckOutSteps() {
+    @BeforeStory
+    public void setUp() throws Exception {
         cleanCheckOutConfiguration();
+    }
+
+    @Given("products: $products")
+    public void products(@Nonnull ExamplesTable products) {
+        products.getRows().stream().forEach(this::processTableRow);
+    }
+
+    private void processTableRow(@Nonnull Map<String, String> columns) {
+        String name = columns.get("name");
+        double price = Double.valueOf(columns.get("price"));
+
+        aProduct(name, price);
     }
 
     @Given("a product \"$name\" with price \"$price\"")
@@ -47,6 +63,11 @@ public class CheckOutSteps {
     @When("scan product \"<productName>\"")
     public void scanProducts(@Named("productName") @Nonnull String productName) {
         theCheckOut().scan(productName);
+    }
+
+    @When("scan products: $products")
+    public void scanProducts(@Nonnull ExamplesTable products) {
+        products.getRows().stream().forEach(columns -> scanProducts(columns.get("name")));
     }
 
     @Then("price has to be equaled \"$expectedPrice\"")
