@@ -67,7 +67,7 @@ public class CheckOutSteps {
 
     @When("scan products: $products")
     public void scanProducts(@Nonnull ExamplesTable products) {
-        products.getRows().stream().forEach(columns -> scanProducts(columns.get("name")));
+        products.getRows().stream().map(columns -> columns.get("name")).forEach(this::scanProducts);
     }
 
     @Then("price has to be equaled \"$expectedPrice\"")

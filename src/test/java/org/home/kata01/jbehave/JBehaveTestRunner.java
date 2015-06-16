@@ -10,10 +10,10 @@ import java.util.List;
 public class JBehaveTestRunner {
     @Test
     public void runClasspathLoadedStoriesAsJUnit() {
-        Embedder embedder = new CheckOutEmbedder();
         List<String> storyPaths = new StoryFinder().findPaths(CodeLocations.codeLocationFromPath("src/test/resources"),
                                                               "**/*.story",
                                                               "**/exclude_*.story");
+        Embedder embedder = new CheckOutEmbedder();
         embedder.runStoriesAsPaths(storyPaths);
     }
 }
