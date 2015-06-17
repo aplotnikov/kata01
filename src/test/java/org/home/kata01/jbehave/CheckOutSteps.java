@@ -5,6 +5,7 @@ import org.home.kata01.product.Price;
 import org.home.kata01.product.Product.Builder;
 import org.home.kata01.product.discounts.Discount;
 import org.jbehave.core.annotations.Alias;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.BeforeStory;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
@@ -27,8 +28,13 @@ public class CheckOutSteps {
     private Optional<Builder>  productBuilder;
     private Optional<CheckOut> checkOut;
 
+    @BeforeScenario
+    public void prepareScenario() throws Exception {
+        cleanCheckOutConfiguration();
+    }
+
     @BeforeStory
-    public void setUp() throws Exception {
+    public void prepareStory() throws Exception {
         cleanCheckOutConfiguration();
     }
 
@@ -51,8 +57,7 @@ public class CheckOutSteps {
         productBuilder = Optional.of(Builder.aProduct().withName(name).withPrice(price));
     }
 
-    @Given("with discount for $amount products price is $price")
-    @Alias("with discount for <amount> products price is <price>")
+    @Given("a discount for $amount products price is $price")
     public void withDiscount(int amount, double price) throws IllegalStateException {
         Discount discount = aDiscount().forProductAmount(amount)
                                        .withPrice(price)

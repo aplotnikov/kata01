@@ -12,7 +12,7 @@ public class JBehaveTestRunner {
     public void runClasspathLoadedStoriesAsJUnit() {
         List<String> storyPaths = new StoryFinder().findPaths(CodeLocations.codeLocationFromPath("src/test/resources"),
                                                               "**/*.story",
-                                                              "**/exclude_*.story");
+                                                              "");
         Embedder embedder = new CheckOutEmbedder();
         embedder.runStoriesAsPaths(storyPaths);
     }
