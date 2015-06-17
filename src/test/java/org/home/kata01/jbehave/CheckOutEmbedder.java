@@ -3,6 +3,7 @@ package org.home.kata01.jbehave;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.embedder.Embedder;
+import org.jbehave.core.io.CasePreservingResolver;
 import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
@@ -14,6 +15,7 @@ public class CheckOutEmbedder extends Embedder {
     public Configuration configuration() {
         return new MostUsefulConfiguration()
                 .useStoryLoader(new LoadFromClasspath(getClass()))
+                .useStoryPathResolver(new CasePreservingResolver())
                 .useStoryReporterBuilder(new StoryReporterBuilder().withFormats(Format.XML,
                                                                                 Format.IDE_CONSOLE,
                                                                                 Format.CONSOLE,
