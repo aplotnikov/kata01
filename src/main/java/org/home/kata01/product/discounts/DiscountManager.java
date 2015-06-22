@@ -4,13 +4,12 @@ import org.home.kata01.product.Price;
 import org.home.kata01.product.amount.Amount;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class DiscountManager {
     private final Map<Amount, Discount> rules;
@@ -46,10 +45,7 @@ public class DiscountManager {
 
     @Nonnull
     private List<Amount> getSortedDiscounts() {
-        List<Amount> amounts = new ArrayList<>(rules.keySet());
-        Collections.sort(amounts, Comparator.<Amount>reverseOrder());
-
-        return amounts;
+        return rules.keySet().stream().sorted(Comparator.<Amount>reverseOrder()).collect(Collectors.toList());
     }
 
     public enum IteratorState {
